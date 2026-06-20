@@ -401,6 +401,71 @@ function getPalaceAdvice(palaceName) {
   return palaceAdviceMap[normalizePalaceKey(palaceName)] || "先记录现实事件，再回到宫位、主星、杂曜和四化逐层验证。";
 }
 
+function getScoreLevel(score) {
+  if (score >= 92) return "重点宫位";
+  if (score >= 86) return "强信号";
+  if (score >= 82) return "优先观察";
+  return "常规观察";
+}
+
+function buildPalaceScoreAnalysis(chart, palace) {
+  if (!palace) {
+    return {
+      key: "empty",
+      name: "未选宫位",
+      score: 0,
+      level: "未评分",
+      formula: "请选择一个宫位查看结构活跃度。",
+      reasons: []
+    };
+  }
+
+  const majorCount = palace.majorStars?.length || 0;
+  const minorCount = palace.minorStars?.length || 0;
+  const triadPalaces = getTriadPalaces(chart, palace).filter((item) => palaceKey(item) !== palaceKey(palace));
+  const strongTriad = triadPalaces.filter((item) => item.score >= 82);
+  const isRealChart = chart.engine === "iztro";
+  const scoreSource = isRealChart
+    ? "当前分值以排盘结果中的主星配置、辅杂曜密度和宫位结构信息生成，用来提示优先观察顺序。"
+    : "系统样本分值用于演示结构权重，正式分析应以自己录入后生成的命盘为准。";
+
+  return {
+    key: palaceKey(palace),
+    name: palace.name,
+    score: palace.score,
+    level: getScoreLevel(palace.score),
+    formula: `${scoreSource}它不是吉凶分，适合当作“哪里更需要展开复盘”的提示。`,
+    reasons: [
+      {
+        label: "主星定性",
+        body: majorCount
+          ? `${formatStars(palace.majorStars)}坐守，宫位主题有明确主轴；主星越集中，越适合先判断该宫的性格、资源或事件底色。`
+          : "本宫主星不明显时，需要借对宫与三方四正来定性，单宫分数不宜直接下结论。"
+      },
+      {
+        label: "辅杂曜细节",
+        body: minorCount
+          ? `${formatStars(palace.minorStars)}补充了助力、阻力、修饰和事件细节；杂曜越多，越需要区分是助成、消耗还是触发条件。`
+          : "辅杂曜较少，解读时要更依赖主星、对宫和四化落点。"
+      },
+      {
+        label: "三方四正",
+        body: `本宫会照${formatPalaceSet(triadPalaces)}。${strongTriad.length ? `其中${strongTriad.map((item) => `${item.name}${item.score}`).join("、")}也属高活跃宫位，说明这组议题容易联动。` : "三方四正未形成明显高分联动，宜回到本宫主题做单点观察。"}`
+      },
+      {
+        label: "运限触发",
+        body: palace.ages?.length
+          ? `小限涉及 ${palace.ages.join("、")}，遇到大限、流年或流月再触发本宫时，事件感会更集中。`
+          : "当前没有小限年龄数据，建议结合大限、流年、流月和流时再判断是否真正被触发。"
+      },
+      {
+        label: "专业校验",
+        body: getPalaceAdvice(palace.name)
+      }
+    ]
+  };
+}
+
 function buildNatalAnalysis(chart) {
   const lifePalace = findPalace(chart, ["命宫"]) || chart.palaces[0];
   const bodyPalace = getBodyPalace(chart);
@@ -635,7 +700,9 @@ const allCharts = computed(() => [...sampleCharts, ...userCharts.value]);
 const activeChart = computed(() => allCharts.value.find((item) => item.id === activeChartId.value) || sampleCharts[0]);
 const activeReading = computed(() => chartReadingDetails[activeChart.value.id] || makeFallbackReading(activeChart.value));
 const natalAnalysis = computed(() => buildNatalAnalysis(activeChart.value));
-const highScorePalaces = computed(() => activeChart.value.palaces.filter((item) => item.score >= 82));
+const highScorePalaces = computed(() => activeChart.value.palaces.filter((item) => item.score >= 82).sort((a, b) => b.score - a.score));
+const scoreAnalysisItems = computed(() => highScorePalaces.value.map((palace) => buildPalaceScoreAnalysis(activeChart.value, palace)));
+const activeScoreAnalysis = computed(() => buildPalaceScoreAnalysis(activeChart.value, activePalace.value));
 const decadePeriods = computed(() => buildDecadePeriods(activeChart.value));
 const yearPeriods = computed(() => buildYearPeriods(activeChart.value));
 const monthPeriods = computed(() => buildMonthPeriods(activeChart.value));
@@ -940,17 +1007,37 @@ function removeUserChart(sampleId) {
           <h2>结构摘要</h2>
         </div>
         <p>{{ activeChart.insight }}</p>
+        <div class="score-head">
+          <span>结构活跃度</span>
+          <em>非吉凶评分</em>
+        </div>
         <div class="focus-list">
           <span v-for="palace in highScorePalaces" :key="palace.name">
             {{ palace.name }} {{ palace.score }}
           </span>
         </div>
+        <el-collapse class="score-collapse">
+          <el-collapse-item
+            v-for="item in scoreAnalysisItems"
+            :key="item.key"
+            :title="`${item.name} ${item.score} · ${item.level}`"
+          >
+            <div class="score-detail">
+              <p>{{ item.formula }}</p>
+              <article v-for="reason in item.reasons" :key="reason.label">
+                <span>{{ reason.label }}</span>
+                <p>{{ reason.body }}</p>
+              </article>
+            </div>
+          </el-collapse-item>
+        </el-collapse>
         <el-divider />
         <div class="selected-palace">
           <span>当前宫位</span>
           <strong>{{ activePalace.name }} · {{ activePalace.branch }}</strong>
           <p>主星：{{ formatStars(activePalace.majorStars) }}</p>
           <p>杂曜：{{ formatStars(activePalace.minorStars) }}</p>
+          <p>评分：{{ activeScoreAnalysis.score }} · {{ activeScoreAnalysis.level }}</p>
           <p v-if="activePalace.ages?.length">小限：{{ activePalace.ages.join("、") }}</p>
           <el-progress :percentage="activePalace.score" :stroke-width="10" color="#b88746" />
         </div>
