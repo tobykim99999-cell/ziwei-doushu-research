@@ -776,6 +776,7 @@ a {
 }
 
 .palace-board {
+  position: relative;
   display: grid;
   grid-template-areas:
     "si wu wei shen"
@@ -787,9 +788,12 @@ a {
   padding: 12px;
   background: #e7edf0;
   border-radius: 8px;
+  overflow: hidden;
 }
 
 .palace-cell {
+  position: relative;
+  z-index: 2;
   display: grid;
   align-content: start;
   gap: 8px;
@@ -804,9 +808,21 @@ a {
 }
 
 .palace-cell.selected {
+  z-index: 3;
   color: #f8fafc;
   background: #2f5d50;
   border-color: #2d9c8b;
+}
+
+.palace-cell.triad-related {
+  border-color: rgba(184, 135, 70, 0.58);
+  background: rgba(255, 251, 243, 0.94);
+  box-shadow: inset 0 0 0 1px rgba(184, 135, 70, 0.12);
+}
+
+.palace-cell.triad-related span,
+.palace-cell.triad-related em {
+  color: #9a6a2f;
 }
 
 .palace-cell span {
@@ -835,32 +851,78 @@ a {
 }
 
 .palace-center {
+  position: relative;
+  z-index: 5;
   grid-area: center;
   display: grid;
-  place-content: center;
-  gap: 10px;
+  align-content: center;
+  gap: 8px;
   min-height: 254px;
-  padding: 24px;
-  text-align: center;
-  color: #f8fafc;
-  background: #11161d;
-  border: 1px solid #b88746;
+  padding: 22px 26px;
+  text-align: left;
+  color: #1d2530;
+  background: transparent;
+  border: 1px dashed rgba(184, 135, 70, 0.46);
   border-radius: 8px;
 }
 
-.palace-center span {
-  color: #d8ac63;
-  font-size: 13px;
-  font-weight: 700;
+.palace-center-brand,
+.palace-center-info span {
+  color: #b88746;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .palace-center strong {
-  font-size: 34px;
+  display: block;
+  color: #11161d;
+  font-size: 26px;
+  line-height: 1.15;
+  text-align: center;
 }
 
-.palace-center p {
+.palace-center-info {
+  display: grid;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.palace-center-info p {
+  display: grid;
+  grid-template-columns: 66px minmax(0, 1fr);
+  gap: 8px;
   margin: 0;
-  color: rgba(248, 250, 252, 0.72);
+  color: #39485a;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.palace-center em {
+  display: block;
+  margin-top: 2px;
+  color: #617084;
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.palace-relation-lines {
+  position: absolute;
+  inset: 12px;
+  z-index: 4;
+  width: calc(100% - 24px);
+  height: calc(100% - 24px);
+  overflow: visible;
+  pointer-events: none;
+}
+
+.palace-relation-lines line {
+  stroke: rgba(145, 154, 164, 0.72);
+  stroke-width: 0.95px;
+  stroke-dasharray: 4 7;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
 }
 
 .focus-list {
@@ -1557,6 +1619,10 @@ a {
       "zi hai"
       "center center";
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .palace-relation-lines {
+    display: none;
   }
 }
 

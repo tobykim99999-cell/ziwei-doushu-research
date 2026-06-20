@@ -343,6 +343,10 @@ function getPalaceIndex(chart, palace) {
   return palaceIndex >= 0 ? palaceIndex : 0;
 }
 
+function palaceKey(palace) {
+  return `${palace?.branch || ""}-${palace?.name || ""}`;
+}
+
 function getTriadPalaces(chart, palace) {
   if (!chart?.palaces?.length || !palace) return [];
   const baseIndex = getPalaceIndex(chart, palace);
@@ -644,6 +648,33 @@ const currentPeriods = computed(() => {
 });
 const selectedPeriod = computed(() => currentPeriods.value[getActivePeriodIndex()] || currentPeriods.value[0]);
 const selectedPeriodAnalysis = computed(() => buildPeriodAnalysis(selectedPeriod.value, activeChart.value));
+const palaceLineAnchors = {
+  si: { x: 0.5, y: 0.5 },
+  wu: { x: 1.5, y: 0.5 },
+  wei: { x: 2.5, y: 0.5 },
+  shen: { x: 3.5, y: 0.5 },
+  chen: { x: 0.5, y: 1.5 },
+  you: { x: 3.5, y: 1.5 },
+  mao: { x: 0.5, y: 2.5 },
+  xu: { x: 3.5, y: 2.5 },
+  yin: { x: 0.5, y: 3.5 },
+  chou: { x: 1.5, y: 3.5 },
+  zi: { x: 2.5, y: 3.5 },
+  hai: { x: 3.5, y: 3.5 }
+};
+const activeTriadPalaces = computed(() => getTriadPalaces(activeChart.value, activePalace.value));
+const activeTriadKeys = computed(() => new Set(activeTriadPalaces.value.map((palace) => palaceKey(palace))));
+const activeTriadSummary = computed(() =>
+  activeTriadPalaces.value.map((palace) => `${palace.name}${palace.branch ? `(${palace.branch})` : ""}`).join(" · ")
+);
+const activeTriadLines = computed(() =>
+  activeTriadPalaces.value
+    .map((palace) => ({
+      key: palaceKey(palace),
+      point: palaceLineAnchors[palace.area]
+    }))
+    .filter((item) => item.point)
+);
 const selectedFlowBoard = computed(() =>
   activeChart.value.palaces.map((palace, index) => {
     const flow = selectedPeriod.value.flow;
@@ -860,11 +891,24 @@ function removeUserChart(sampleId) {
         </div>
 
         <div class="palace-board">
+          <svg class="palace-relation-lines" viewBox="0 0 4 4" preserveAspectRatio="none" aria-hidden="true">
+            <line
+              v-for="line in activeTriadLines"
+              :key="line.key"
+              x1="2"
+              y1="2"
+              :x2="line.point.x"
+              :y2="line.point.y"
+            />
+          </svg>
           <button
             v-for="palace in activeChart.palaces"
             :key="`${palace.branch}-${palace.name}`"
             class="palace-cell"
-            :class="{ selected: palace.name === activePalace.name }"
+            :class="{
+              selected: palaceKey(palace) === palaceKey(activePalace),
+              'triad-related': activeTriadKeys.has(palaceKey(palace)) && palaceKey(palace) !== palaceKey(activePalace)
+            }"
             :style="{ gridArea: palace.area }"
             type="button"
             @click="activePalace = palace"
@@ -876,9 +920,16 @@ function removeUserChart(sampleId) {
           </button>
 
           <div class="palace-center">
-            <span>核心观察</span>
-            <strong>{{ activePalace.name }}</strong>
-            <p>{{ activePalace.note }}</p>
+            <div class="palace-center-brand">紫微研究盘</div>
+            <strong>{{ activeChart.name }}</strong>
+            <div class="palace-center-info">
+              <p><span>出生</span>{{ activeChart.birthSummary }}</p>
+              <p><span>当前</span>{{ activePalace.name }} · {{ activePalace.branch }}</p>
+              <p><span>三方四正</span>{{ activeTriadSummary }}</p>
+              <p><span>主星</span>{{ formatStars(activePalace.majorStars) }}</p>
+              <p><span>杂曜</span>{{ formatStars(activePalace.minorStars) }}</p>
+            </div>
+            <em>{{ activePalace.note }}</em>
           </div>
         </div>
       </section>
@@ -1026,4 +1077,3 @@ function removeUserChart(sampleId) {
     </section>
   </main>
 </template>
-
