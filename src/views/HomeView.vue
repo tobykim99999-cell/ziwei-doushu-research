@@ -30,10 +30,18 @@ import { architectureSteps, faqItems, moduleCards, platformUpdates, researchStat
             <span></span>
             <span></span>
           </div>
+          <div class="galaxy-orbit" aria-hidden="true">
+            <div class="galaxy-system">
+              <span class="galaxy-core"></span>
+              <span class="orbit-dot orbit-dot-a"></span>
+              <span class="orbit-dot orbit-dot-b"></span>
+              <span class="orbit-dot orbit-dot-c"></span>
+            </div>
+          </div>
           <div class="star-map-card">
-            <span>演示样本</span>
-            <strong>{{ sampleCharts[0].name }}</strong>
-            <p>{{ sampleCharts[0].birthSummary }}</p>
+            <span>命盘研究入口</span>
+            <strong>建立可复盘的分析记录</strong>
+            <p>录入真实出生资料后，按十二宫、星曜组合、四化飞布与运限层级展开结构化分析。</p>
           </div>
         </div>
       </div>
