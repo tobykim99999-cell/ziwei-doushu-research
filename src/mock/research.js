@@ -1,8 +1,8 @@
 ﻿export const researchStats = [
-  { label: "样本命盘", value: 128, suffix: "例", tone: "gold" },
-  { label: "结构标签", value: 36, suffix: "组", tone: "teal" },
-  { label: "验证假设", value: 18, suffix: "条", tone: "violet" },
-  { label: "可复盘案例", value: 42, suffix: "篇", tone: "rose" }
+  { label: "真实排盘", value: "已接入", suffix: "", tone: "gold" },
+  { label: "样本管理", value: "可录入", suffix: "", tone: "teal" },
+  { label: "运限查看", value: "已支持", suffix: "", tone: "violet" },
+  { label: "智能分析", value: "规划中", suffix: "", tone: "rose" }
 ];
 
 const palaceNames = ["命宫", "兄弟", "夫妻", "子女", "财帛", "疾厄", "迁移", "交友", "官禄", "田宅", "福德", "父母"];
@@ -35,28 +35,28 @@ function makePalaces(seed, stars) {
 export const sampleCharts = [
   {
     id: "case-001",
-    name: "案例 A：研究型命盘",
-    birthSummary: "农历六月十八 · 巳时 · 甲年",
+    name: "演示样本 A：研究路径",
+    birthSummary: "演示数据 · 非真实命盘",
     tags: ["命迁线强", "官禄见权", "财帛成局"],
-    question: "长期研究能力与职业路径如何互相牵引？",
+    question: "如何围绕一个研究主题建立命盘分析结构？",
     insight: "命宫与官禄宫形成稳定呼应，适合用长期主题沉淀方法论；财帛宫不宜只看收入，更适合看资源组织能力。",
     palaces: makePalaces(4, [["紫微", "天相"], ["太阳"], ["武曲", "破军"], ["天同"], ["廉贞", "贪狼"], ["天府"]])
   },
   {
     id: "case-002",
-    name: "案例 B：协作型命盘",
-    birthSummary: "农历三月初九 · 申时 · 辛年",
+    name: "演示样本 B：协作关系",
+    birthSummary: "演示数据 · 非真实命盘",
     tags: ["迁移活跃", "交友成网", "福德需养"],
-    question: "外部合作是否能放大个人优势？",
+    question: "如何观察迁移、交友与合作关系的互动？",
     insight: "迁移宫和交友宫信息密集，适合在跨领域协作中寻找突破；福德宫提示节律管理，否则容易被外部机会牵着走。",
     palaces: makePalaces(11, [["天机"], ["天梁"], ["太阴"], ["巨门"], ["七杀"], ["紫微", "天府"]])
   },
   {
     id: "case-003",
-    name: "案例 C：转型型命盘",
-    birthSummary: "农历九月廿四 · 子时 · 戊年",
+    name: "演示样本 C：阶段转型",
+    birthSummary: "演示数据 · 非真实命盘",
     tags: ["四化集中", "财官互照", "田宅稳定"],
-    question: "从执行型角色转向产品型角色的关键阻力是什么？",
+    question: "如何把职业转型问题拆成财帛、官禄与迁移层级？",
     insight: "财官两宫有清晰牵动，适合把执行经验产品化；阻力多来自自我定位和对不确定性的耐受度。",
     palaces: makePalaces(19, [["廉贞"], ["贪狼"], ["紫微"], ["天府", "武曲"], ["太阳"], ["天相"]])
   }
@@ -138,34 +138,34 @@ export const chartReadingDetails = {
 };
 
 export const platformUpdates = [
-  { type: "样本新增", title: "职业转型专题样本补充 12 例", date: "2026-06-18" },
-  { type: "结构标签", title: "新增命迁线、财官线、福德节律标签", date: "2026-06-12" },
-  { type: "Agent 准备", title: "上下文协议草案完成，可接命盘 JSON", date: "2026-06-06" }
+  { type: "排盘能力", title: "支持录入阳历/农历、时辰和性别，并生成十二宫命盘", date: "已支持" },
+  { type: "分析能力", title: "提供本命、三方四正、四化、大限、流年、流月与流时的分层查看", date: "已支持" },
+  { type: "数据说明", title: "系统示例仅用于演示页面结构；正式分析请使用自行录入的样本", date: "说明" }
 ];
 
 export const architectureSteps = [
   {
     index: "01",
-    title: "结构化命盘",
-    body: "将十二宫、主星、四化、三方四正转成稳定数据结构，方便检索、比对和后续 Agent 调用。"
+    title: "录入命盘信息",
+    body: "填写出生日期、时辰、性别和关注问题，生成可查看的十二宫命盘与星曜分布。"
   },
   {
     index: "02",
-    title: "案例化研究",
-    body: "每个判断都回到真实事件、原始假设和复盘结论，减少只凭单次灵感做解释。"
+    title: "分层阅读盘面",
+    body: "按本命、三方四正、四化、运限和现实问题逐层观察，避免只凭单个宫位或单颗星下结论。"
   },
   {
     index: "03",
-    title: "智能化编排",
-    body: "后续 Agent 可根据问题选择样本、提取宫位上下文、生成研究假设，并追问缺失信息。"
+    title: "记录分析与复盘",
+    body: "把判断依据、现实事件和后续验证结果保留下来，为长期学习和后续智能问答接入准备基础资料。"
   }
 ];
 
 export const moduleCards = [
-  { title: "样本盘工作台", path: "/charts", tag: "Chart Lab", desc: "查看 mock 命盘、十二宫可视化和结构摘要。" },
-  { title: "研究资料库", path: "/library", tag: "Knowledge", desc: "沉淀研究方法、标签体系、复盘规则。" },
-  { title: "新手看盘指南", path: "/guide", tag: "Guide", desc: "按步骤学习宫位、四化、星曜互涉和复盘经验。" },
-  { title: "Agent 工作区", path: "/agent", tag: "AI Ready", desc: "预留对话、上下文包和执行链路展示。" }
+  { title: "排盘工作台", path: "/charts", tag: "Chart", desc: "录入命盘，查看十二宫、主星、杂曜、大限、流年、流月与流时信息。" },
+  { title: "研究资料库", path: "/library", tag: "Library", desc: "整理研究方法、术语说明、复盘规则和后续可引用的资料。" },
+  { title: "看盘指南", path: "/guide", tag: "Guide", desc: "按步骤理解主宫、对宫、三方四正、四化和星曜互涉的阅读顺序。" },
+  { title: "智能工作区", path: "/agent", tag: "Agent", desc: "预留后续接入智能问答的上下文展示区，目前用于说明数据组织方式。" }
 ];
 
 export const researchNotes = [
@@ -193,16 +193,16 @@ export const researchNotes = [
 
 export const faqItems = [
   {
-    question: "这个平台和普通排盘工具有什么不同？",
-    answer: "它更偏研究与复盘，不只生成命盘，也强调样本、标签、假设和结论的管理。"
+    question: "这个平台目前能做什么？",
+    answer: "当前支持命盘录入、十二宫展示、杂曜查看、大限/流年/流月/流时切换，以及按层级生成分析提示。"
   },
   {
-    question: "现在的数据来自哪里？",
-    answer: "当前全部使用 mock 数据，先验证信息架构和交互方式，后续可以替换为真实接口。"
+    question: "首页展示的样本是否是真实案例？",
+    answer: "不是。系统样本只用于演示页面结构和分析字段；正式研究应使用自己录入的命盘或经过授权的样本。"
   },
   {
-    question: "后续如何接入 Agent？",
-    answer: "可以从 Agent 工作区开始，把当前命盘、研究笔记、用户问题整理成上下文包后发送给服务端。"
+    question: "智能问答能力现在是否已经上线？",
+    answer: "尚未作为正式服务上线。当前只保留工作区和上下文展示思路，后续可在此基础上接入 Agent。"
   }
 ];
 
