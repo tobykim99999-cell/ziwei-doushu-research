@@ -1100,9 +1100,10 @@ function removeUserChart(sampleId) {
         <el-tab-pane label="流年" name="year" />
         <el-tab-pane label="流月" name="month" />
         <el-tab-pane label="流时" name="hour" />
+        <el-tab-pane label="格局分析" name="patterns" />
       </el-tabs>
 
-      <div class="period-workbench">
+      <div v-if="activeFlowTab !== 'patterns'" class="period-workbench">
         <aside class="period-selector">
           <button
             v-for="(period, index) in currentPeriods"
@@ -1159,12 +1160,27 @@ function removeUserChart(sampleId) {
         </section>
       </div>
 
-      <div class="chart-pattern-panel">
+      <div v-else class="chart-pattern-panel">
         <div class="section-title compact">
           <el-icon><Star /></el-icon>
           <h2>命盘格局与破格判断</h2>
         </div>
         <p class="pattern-summary">{{ chartPatternAnalysis.summary }}</p>
+
+        <div class="pattern-guide">
+          <article>
+            <span>定格局</span>
+            <p>先确认命宫、身宫和关键宫位是否满足成格条件，再看三方四正是否会齐所需主星或辅曜。</p>
+          </article>
+          <article>
+            <span>看破格</span>
+            <p>成格后再查同宫、对宫、三方四正是否见煞忌、空劫或过度冲动的组合，判断是否减力或转性。</p>
+          </article>
+          <article>
+            <span>候选待验</span>
+            <p>亮度、夹拱或完整条件不足时，只作为候选格局提示，需要结合真实排盘参数和现实事件复盘。</p>
+          </article>
+        </div>
 
         <div class="pattern-grid">
           <article v-for="pattern in chartPatternAnalysis.patterns" :key="pattern.name">

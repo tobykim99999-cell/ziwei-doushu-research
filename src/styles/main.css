@@ -1217,9 +1217,36 @@ a {
   line-height: 1.8;
 }
 
+.pattern-guide {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pattern-guide article {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  background: #fff7e8;
+  border: 1px solid rgba(184, 135, 70, 0.2);
+  border-radius: 8px;
+}
+
+.pattern-guide span {
+  color: #8b6330;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.pattern-guide p {
+  margin: 0;
+  color: #617084;
+  line-height: 1.7;
+}
+
 .pattern-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 
@@ -1227,7 +1254,7 @@ a {
   display: grid;
   align-content: start;
   gap: 12px;
-  min-height: 360px;
+  min-height: 0;
   padding: 18px;
   background: #fff;
   border: 1px solid rgba(220, 228, 232, 0.88);
@@ -1343,7 +1370,32 @@ a {
 }
 
 .flow-tabs {
+  display: block;
   padding-top: 4px;
+}
+
+.flow-tabs .el-tabs__header {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.flow-tabs .el-tabs__nav-scroll {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.flow-tabs .el-tabs__nav {
+  width: 100%;
+}
+
+.flow-tabs .el-tabs__item {
+  padding: 0 18px;
+  font-weight: 800;
+}
+
+.flow-tabs .el-tabs__item:last-child {
+  margin-left: auto;
+  color: #8b6330;
 }
 
 .flow-card {
@@ -2187,10 +2239,13 @@ a {
   .user-sample-grid,
   .reading-overview-grid,
   .natal-analysis-grid,
-  .pattern-grid,
   .period-analysis-grid,
   .flow-grid,
   .hourly-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pattern-guide {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -2202,10 +2257,13 @@ a {
   .user-sample-grid,
   .reading-overview-grid,
   .natal-analysis-grid,
-  .pattern-grid,
   .period-analysis-grid,
   .flow-grid,
   .hourly-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pattern-guide {
     grid-template-columns: 1fr;
   }
 }
