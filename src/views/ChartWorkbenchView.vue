@@ -4,6 +4,7 @@ import { ElMessage } from "element-plus";
 import { astro } from "iztro";
 import { Delete, Plus, Reading, Star, Timer, TrendCharts } from "@element-plus/icons-vue";
 import { chartReadingDetails, sampleCharts } from "../mock/research";
+import { analyzeChartPatterns } from "../mock/ziweiPatterns";
 
 const storageKey = "ziwei-research-user-samples";
 const palaceNames = ["命宫", "兄弟", "夫妻", "子女", "财帛", "疾厄", "迁移", "交友", "官禄", "田宅", "福德", "父母"];
@@ -715,6 +716,7 @@ const currentPeriods = computed(() => {
 });
 const selectedPeriod = computed(() => currentPeriods.value[getActivePeriodIndex()] || currentPeriods.value[0]);
 const selectedPeriodAnalysis = computed(() => buildPeriodAnalysis(selectedPeriod.value, activeChart.value));
+const chartPatternAnalysis = computed(() => analyzeChartPatterns(activeChart.value));
 const palaceLineAnchors = {
   si: { x: 0.5, y: 0.5 },
   wu: { x: 1.5, y: 0.5 },
@@ -1155,6 +1157,41 @@ function removeUserChart(sampleId) {
             </article>
           </div>
         </section>
+      </div>
+
+      <div class="chart-pattern-panel">
+        <div class="section-title compact">
+          <el-icon><Star /></el-icon>
+          <h2>命盘格局与破格判断</h2>
+        </div>
+        <p class="pattern-summary">{{ chartPatternAnalysis.summary }}</p>
+
+        <div class="pattern-grid">
+          <article v-for="pattern in chartPatternAnalysis.patterns" :key="pattern.name">
+            <div class="pattern-head">
+              <span>{{ pattern.category }}</span>
+              <em :class="pattern.statusClass">{{ pattern.status }}</em>
+            </div>
+            <strong>{{ pattern.name }}</strong>
+            <p>{{ pattern.basis }}</p>
+            <div class="pattern-reading">
+              <b>格局解读</b>
+              <p>{{ pattern.reading }}</p>
+            </div>
+            <div class="pattern-reading">
+              <b>破格判断</b>
+              <p>{{ pattern.breaking }}</p>
+            </div>
+            <div class="pattern-reading">
+              <b>调整建议</b>
+              <p>{{ pattern.advice }}</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="pattern-note">
+          <span>定格原则：先看命宫与身宫，再取三方四正、同宫、对宫、辅弼会照与煞忌冲破；候选格局会标注“待验”，不强行当作严格成格。</span>
+        </div>
       </div>
 
       <div class="reading-footnote">

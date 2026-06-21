@@ -1199,6 +1199,114 @@ a {
   margin-bottom: 0;
 }
 
+.chart-pattern-panel {
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(247, 250, 252, 0.94)),
+    radial-gradient(circle at 10% 0, rgba(184, 135, 70, 0.12), transparent 32%);
+  border: 1px solid rgba(184, 135, 70, 0.22);
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(31, 55, 62, 0.07);
+}
+
+.pattern-summary {
+  margin: 0;
+  color: #465668;
+  line-height: 1.8;
+}
+
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.pattern-grid article {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-height: 360px;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid rgba(220, 228, 232, 0.88);
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(31, 55, 62, 0.06);
+}
+
+.pattern-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pattern-head span {
+  color: #b88746;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.pattern-head em {
+  padding: 5px 8px;
+  color: #2f5d50;
+  background: #e5f4ee;
+  border-radius: 8px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.pattern-head em.broken {
+  color: #9a4f3f;
+  background: #fff0ea;
+}
+
+.pattern-head em.warning {
+  color: #9a6a2f;
+  background: #fff7e8;
+}
+
+.pattern-head em.candidate {
+  color: #4f5f74;
+  background: #eef2f5;
+}
+
+.pattern-grid strong {
+  color: #1d2530;
+  font-size: 22px;
+}
+
+.pattern-grid p {
+  margin: 0;
+  color: #617084;
+  line-height: 1.75;
+}
+
+.pattern-reading {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  background: #f7fafc;
+  border: 1px solid #dce4e8;
+  border-radius: 8px;
+}
+
+.pattern-reading b {
+  color: #2f5d50;
+  font-size: 13px;
+}
+
+.pattern-note {
+  padding: 12px 14px;
+  color: #8b6330;
+  background: #fff7e8;
+  border: 1px solid rgba(184, 135, 70, 0.2);
+  border-radius: 8px;
+  line-height: 1.75;
+}
+
 .natal-analysis-grid strong,
 .period-analysis-grid strong {
   display: block;
@@ -2079,6 +2187,7 @@ a {
   .user-sample-grid,
   .reading-overview-grid,
   .natal-analysis-grid,
+  .pattern-grid,
   .period-analysis-grid,
   .flow-grid,
   .hourly-grid {
@@ -2093,6 +2202,7 @@ a {
   .user-sample-grid,
   .reading-overview-grid,
   .natal-analysis-grid,
+  .pattern-grid,
   .period-analysis-grid,
   .flow-grid,
   .hourly-grid {
