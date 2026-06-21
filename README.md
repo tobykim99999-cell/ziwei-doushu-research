@@ -8,3 +8,5 @@ npm run dev
 ```
 
 默认开发地址：`http://localhost:5188`
+
+线上预览地址：https://ziwei-doushu-research.pages.dev/charts
